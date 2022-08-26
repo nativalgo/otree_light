@@ -1,0 +1,16 @@
+{{ extends 'global/Page.html' }}
+{{ block title }}Your Choice{{ endblock }}
+
+{{ block content }}
+
+<p>
+You are {{C.TRUSTOR_ROLE}}. Now you have {{C.ENDOWMENT}}. How much will you send to {{C.TRUSTEE_ROLE}}?
+</p>
+
+{{ formfields }}
+<p>
+{{ next_button }}
+</p>
+
+
+{{ endblock }}

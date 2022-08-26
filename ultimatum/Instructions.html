@@ -1,0 +1,27 @@
+{{ extends 'global/Page.html' }}
+{{ block title }}Instructions{{ endblock }}
+
+{{ block content }}
+
+<p>
+ In this task, you will be randomly paired with another person in the room. One of you will be randomly selected as {{C.PROPOSER_ROLE}} and one of you will be {{C.RECEIVER_ROLE}}. You will not be told the identity of the person with whom you are paired. {{C.PROPOSER_ROLE}} begins with {{subsession.endowmentA}} tokens and {{C.RECEIVER_ROLE}} begins with {{subsession.endowmentB}} tokens.   
+</p>
+
+<p>
+{{C.PROPOSER_ROLE}}’s decision:
+{{C.PROPOSER_ROLE}} will be asked to propose to split {{subsession.endowmentA}} tokens between themselves and {{C.RECEIVER_ROLE}}. {{C.PROPOSER_ROLE}} can choose any integer among between 0 and {{subsession.endowmentA}}} tokens.
+    
+</p>
+<p>
+{{C.RECEIVER_ROLE}}’s decision:
+{{C.RECEIVER_ROLE}} will be told the offer made by {{C.PROPOSER_ROLE}} and asked to choose either to <b>accept</b> or <b>reject</b> the offer. If {{C.RECEIVER_ROLE}} <b>accepts</b> the offer, both {{C.PROPOSER_ROLE}} and {{C.RECEIVER_ROLE}} receive the amounts specified in the accepted offer. If {{C.RECEIVER_ROLE}} <b>rejects</b> the offer, both players receive zero earnings from this task.
+We remind you that one task will be randomly selected for payment at the end. In this task, 1 token = {{exchange_rate_ult}} 
+Please raise your hand if you have any questions, otherwise please click Next to continue
+
+</p>
+
+
+
+{{ next_button }}
+
+{{ endblock }}
