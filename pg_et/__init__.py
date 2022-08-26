@@ -6,11 +6,12 @@ doc = 'Public Goods game set up for eye-tracking data collection'
 class C(BaseConstants):
     NAME_IN_URL = 'pg_et'
     PLAYERS_PER_GROUP = 4
-    NUM_ROUNDS = 0
     MULTIPLIER = 2
     PRACTICE_ROUNDS = 2
     ENDOWMENT = 10
     NUM_REAL_ROUNDS = 10
+    NUM_ROUNDS = PRACTICE_ROUNDS + NUM_REAL_ROUNDS
+
 class Subsession(BaseSubsession):
     total_rounds = models.IntegerField()
 def creating_subsession(subsession: Subsession):
