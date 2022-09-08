@@ -4,12 +4,12 @@
 {{ block content }}
 
 <p>
- In this task, you will be randomly paired with another person in the room. One of you will be randomly selected as {{C.PROPOSER_ROLE}} and one of you will be {{C.RECEIVER_ROLE}}. You will not be told the identity of the person with whom you are paired. {{C.PROPOSER_ROLE}} begins with {{subsession.endowmentA}} tokens and {{C.RECEIVER_ROLE}} begins with {{subsession.endowmentB}} tokens.   
+ In this task, you will be randomly paired with another person in the room. One of you will be randomly selected as {{C.PROPOSER_ROLE}} and one of you will be {{C.RECEIVER_ROLE}}. You will not be told the identity of the person with whom you are paired. {{C.PROPOSER_ROLE}} begins with {{C.ENDOWMENT_A}} tokens and {{C.RECEIVER_ROLE}} begins with {{C.ENDOWMENT_B}} tokens.
 </p>
 
 <p>
 {{C.PROPOSER_ROLE}}’s decision:
-{{C.PROPOSER_ROLE}} will be asked to propose to split {{subsession.endowmentA}} tokens between themselves and {{C.RECEIVER_ROLE}}. {{C.PROPOSER_ROLE}} can choose any integer among between 0 and {{subsession.endowmentA}}} tokens.
+{{C.PROPOSER_ROLE}} will be asked to propose to split {{C.ENDOWMENT_A}} tokens between themselves and {{C.RECEIVER_ROLE}}. {{C.PROPOSER_ROLE}} can choose any integer among between 0 and {{C.ENDOWMENT_A}} tokens.
     
 </p>
 <p>
