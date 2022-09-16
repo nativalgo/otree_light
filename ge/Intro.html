@@ -1,0 +1,21 @@
+{{ extends 'global/Page.html' }}
+{{ block title }}Instructions{{ endblock }}
+
+{{ block content }}
+<p>
+In this task, there are two types of participants: {{C.EMPLOYER_ROLE}} and {{C.EMPLOYEE_ROLE}}.
+</p>
+<p>
+You will be randomly chosen with equal chance whether you will be an {{C.EMPLOYER_ROLE}} or an {{C.EMPLOYEE_ROLE}}. Each person selected to be an {{C.EMPLOYER_ROLE}} will be randomly paired with another person in the room who has been selected as an {{C.EMPLOYEE_ROLE}}.
+</p>
+<p>
+The identity of the participants will remain anonymous. You will never know the identity of the person you were paired with and the other person will never know your identity.
+</p>
+<p>
+We remind you that one task will be randomly selected for payment at the end. 1 token = {{exchange_rate_ge}}
+</p>
+{{ formfields }}
+
+{{ next_button }}
+
+{{ endblock }}

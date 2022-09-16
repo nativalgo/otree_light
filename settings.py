@@ -5,12 +5,12 @@ SESSION_CONFIGS = [
     dict(name='UTP', num_demo_participants=None, app_sequence=['Intro', 'ultimatum', 'trust', 'pg_et', 'exit_survey'],
          use_browser_bots=True),
     dict(name='Escape', num_demo_participants=None, app_sequence=['exit_survey'],
-         use_browser_bots=True,
-         )
+         use_browser_bots=True,),
+    dict(name = 'ge', num_demo_participants=None, app_sequence=['ge'])
 ]
 LANGUAGE_CODE = 'en'
 REAL_WORLD_CURRENCY_CODE = 'USD'
-USE_POINTS = False
+USE_POINTS = True
 DEMO_PAGE_INTRO_HTML = ''
 PARTICIPANT_FIELDS = ['payoff_ultimatum', 'payoff_trust', 'payoff_pg_et']
 SESSION_FIELDS = []

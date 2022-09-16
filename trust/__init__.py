@@ -67,19 +67,17 @@ class Decisions(Page):
 
 
 class AssignmentA(Page):
-    form_model = 'player'
 
     @staticmethod
     def is_displayed(player: Player):
-        return player.role == C.TRUSTOR_ROLE
+        return player.role() == C.TRUSTOR_ROLE
 
 
 class AssignmentB(Page):
-    form_model = 'player'
-
-    @staticmethod
-    def is_displayed(player: Player):
-        return player.role == C.TRUSTEE_ROLE
+    pass
+    # @staticmethod
+    # def is_displayed(player: Player):
+    #     return player.role() == C.TRUSTEE_ROLE
 
 
 class Send(Page):
@@ -88,7 +86,7 @@ class Send(Page):
 
     @staticmethod
     def is_displayed(player: Player):
-        return player.role == C.TRUSTOR_ROLE
+        return player.role() == C.TRUSTOR_ROLE
 
 
 class SendWaitPage(WaitPage):
@@ -101,7 +99,7 @@ class SendBack(Page):
 
     @staticmethod
     def is_displayed(player: Player):
-        return player.role == C.TRUSTEE_ROLE
+        return player.role() == C.TRUSTEE_ROLE
 
     @staticmethod
     def vars_for_template(player: Player):

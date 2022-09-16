@@ -6,7 +6,7 @@ class PlayerBot(Bot):
     def play_round(self):
         yield Introduction
         yield Decisions
-        if self.player.role == C.TRUSTOR_ROLE:
+        if self.player.role() == C.TRUSTOR_ROLE:
             yield AssignmentA
             yield Send, dict(sent_amount=10)
         else:

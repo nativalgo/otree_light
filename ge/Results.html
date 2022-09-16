@@ -1,0 +1,25 @@
+{{ extends 'global/Page.html' }}
+{{ block title }}Results{{ endblock }}
+
+{{ block content }}
+<p>You were assigned to be <b>{{player.role()}}</b></p>
+<p>
+    Employer offered wage {{ group.employer_wage_offer }} for effort level {{ group.desired_employee_work_effort }}
+</p>
+<p>
+    Employee chose effort level {{ group.employee_work_effort }}
+</p>
+<p>
+    Employer's final point value: <b>{{ employer_payoff }}</b>
+</p>
+<p>
+    Employee's final point value: <b>{{ employee_payoff }}</b>
+</p>
+
+
+
+
+
+{{ next_button }}
+
+{{ endblock }}
