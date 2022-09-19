@@ -13,7 +13,6 @@ class C(BaseConstants):
     ENDOWMENT = 10
     TRUSTOR_ROLE = 'Player A'
     TRUSTEE_ROLE = 'Player B'
-    INSTRUCTIONS_TEMPLATE = 'trust/instructions.html'
 
 
 class Subsession(BaseSubsession):

@@ -19,7 +19,7 @@ class Subsession(BaseSubsession):
 def creating_session(subsession: Subsession):
     session = subsession.session
     session.random_pay_app = random.randint(0, 3)
-    print('random app selection', session.random_pay_app)
+    print('random app selection (0-based index)', session.random_pay_app)
 
 
 class Group(BaseGroup):
@@ -84,7 +84,7 @@ class Survey1(Page):
         participant = player.participant
         session = player.session
         selected_task = session.task_order[session.random_pay_app]
-        participant.payoff = participant[selected_task + '_payoff']
+        participant.payoff = participant.vars['payoff_' + selected_task]
 
         print(dict(participant=player.id_in_group, payoff=participant.payoff))
 
