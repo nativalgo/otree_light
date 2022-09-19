@@ -1,5 +1,5 @@
 
-from random import random
+from random import random, shuffle
 from otree.api import *
 c = cu
 
@@ -19,7 +19,7 @@ class Subsession(BaseSubsession):
 def creating_session(subsession: Subsession):
     # TODO: Determine order of the apps to run
     task_order = ['ultimatum', 'trust', 'pg_et', 'ge']
-    random.shuffle(task_order)
+    shuffle(task_order)
     subsession.session.task_order = task_order
     print('Task order', task_order)
 

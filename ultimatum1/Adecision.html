@@ -1,0 +1,12 @@
+{{ extends 'global/Page.html' }}
+{{ block title }}Decision A{{ endblock }}
+
+{{ block content }}
+
+You are assigned as {{player.role}}. You have {{C.ENDOWMENT_A}} tokens. Please choose how many tokens you propose to send to {{C.RECEIVER_ROLE}}, if any. Please recall that {{C.RECEIVER_ROLE}} can accept or reject your offer.
+
+{{ formfields }}
+
+{{ next_button }}
+
+{{ endblock }}

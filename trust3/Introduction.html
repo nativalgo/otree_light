@@ -1,0 +1,18 @@
+{{ extends 'global/Page.html' }}
+{{ block title }}Task {{task_number}} {{ endblock }}
+
+{{ block content }}
+
+<p>
+  In this task, you will be randomly paired with someone in the room different from Task 1. One of you will be randomly selected as {{C.TRUSTOR_ROLE}} and one of you will be {{C.TRUSTEE_ROLE}}. You will not be told the identity of the person with whom you are paired. {{C.TRUSTOR_ROLE}} and {{C.TRUSTEE_ROLE}} both begin with {{C.ENDOWMENT}} tokens.  
+</p>
+<P>
+   We remind you that one task will be randomly selected for payment at the end. In this task, 1 token = {{exchange_rate_trust}}
+</P>
+
+Please click next to view more about the decisions you will make.
+
+
+{{ next_button }}
+
+{{ endblock }}

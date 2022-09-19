@@ -1,0 +1,16 @@
+{{ extends 'global/Page.html' }}
+{{ block title }}Your Choice{{ endblock }}
+
+{{ block content }}
+
+<p>
+    You are {{C.TRUSTEE_ROLE}}.
+    {{C.TRUSTOR_ROLE}} sent {{ group.sent_amount }} tokens. The amount has tripled, so you have {{ tripled_amount }} in addition to your {{C.ENDOWMENT}}, which is in total {{total_amount}}.
+    You now have the opportunity to send any amount of what you received to {{C.TRUSTOR_ROLE}}. You will keep your original {{C.ENDOWMENT}} tokens.
+    Out of {{total_amount}}, how much would you like to send to {{C.TRUSTOR_ROLE}}?
+</p>
+
+{{ formfields }}
+<p>{{ next_button }}</p>
+
+{{ endblock }}

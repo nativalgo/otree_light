@@ -6,7 +6,7 @@ doc = 'Public Goods game set up for eye-tracking data collection'
 
 
 class C(BaseConstants):
-    NAME_IN_URL = 'pg_et_0'
+    NAME_IN_URL = 'pg_et_3'
     PLAYERS_PER_GROUP = 4
     MULTIPLIER = 2
     PRACTICE_ROUNDS = 2

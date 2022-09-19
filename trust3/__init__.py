@@ -6,7 +6,7 @@ doc = '\nThis is a standard 2-player trust game where the amount sent by player 
 
 
 class C(BaseConstants):
-    NAME_IN_URL = 'trust'
+    NAME_IN_URL = 'trust_3'
     PLAYERS_PER_GROUP = 2
     NUM_ROUNDS = 1
     MULTIPLIER = 3

@@ -20,7 +20,7 @@ SESSION_CONFIGS = [
          use_browser_bots=True,),
     dict(name='trust',
          num_demo_participants=None,
-         app_sequence=['trust'])
+         app_sequence=['trust0'])
 ]
 LANGUAGE_CODE = 'en'
 REAL_WORLD_CURRENCY_CODE = 'USD'

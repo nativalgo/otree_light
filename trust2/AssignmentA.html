@@ -1,0 +1,13 @@
+{{ extends 'global/Page.html' }}
+{{ block title }}Assignment{{ endblock }}
+
+{{ block content }}
+
+Your randomly assigned role in this task has been listed below <br>
+You were randomly selected to be {{C.TRUSTOR_ROLE}} <br>
+Please click Next to decide how many tokens to send to {{C.TRUSTEE_ROLE}}
+
+
+{{ next_button }}
+
+{{ endblock }}

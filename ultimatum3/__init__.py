@@ -6,7 +6,7 @@ doc = ''
 
 
 class C(BaseConstants):
-    NAME_IN_URL = 'ultimatum'
+    NAME_IN_URL = 'ultimatum_3'
     PLAYERS_PER_GROUP = 2
     NUM_ROUNDS = 1
     PROPOSER_ROLE = 'Player A'

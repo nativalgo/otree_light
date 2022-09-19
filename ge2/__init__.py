@@ -6,7 +6,7 @@ doc = ''
 
 
 class C(BaseConstants):
-    NAME_IN_URL = 'ge'
+    NAME_IN_URL = 'ge_2'
     PLAYERS_PER_GROUP = 2
     NUM_ROUNDS = 1
     EMPLOYER_ROLE = 'employer'
