@@ -18,20 +18,6 @@ class C(BaseConstants):
 
 class Subsession(BaseSubsession):
 
-    def creating_subsession(self):
-        subsession = self
-        subsession.is_practice_round = (
-                subsession.round_number <= C.NUM_PRACTICE_ROUNDS
-        )
-        if not subsession.is_practice_round:
-            subsession.real_round_number = (
-                    subsession.round_number - C.NUM_PRACTICE_ROUNDS
-            )
-
-        # assign is_genpop based on label
-        for player in subsession.get_players():
-            player.is_genpop = player.participant.label.lower()[0].to == "g"
-
     def is_practice_round(self):
         return self.round_number <= C.PRACTICE_ROUNDS
 
@@ -42,11 +28,10 @@ class Group(BaseGroup):
 
     def compute_payoffs(self):
         group = self
-        subsession = group.subsession
         players = group.get_players()
         group.total_contribution = sum(p.contribution for p in players)
         group.individual_share = (
-                group.total_contribution * C.MULTIPLIER / C.PLAYERS_PER_GROUP
+            group.total_contribution * C.MULTIPLIER / C.PLAYERS_PER_GROUP
         )
 
         for p in players:
@@ -56,13 +41,15 @@ class Group(BaseGroup):
 
 
 class Player(BasePlayer):
-    is_genpop = models.BooleanField(initial=False)
-    contribution = models.IntegerField(label='Your contribution in the public account:', max=C.ENDOWMENT, min=0)
-    private = models.IntegerField(label='Your contribution in the private account:', max=C.ENDOWMENT, min=0)
+    contribution = models.IntegerField(
+        label='Your contribution in the public account:', max=C.ENDOWMENT, min=0)
+    private = models.IntegerField(
+        label='Your contribution in the private account:', max=C.ENDOWMENT, min=0)
 
     def calculate_game_payoff(self):
         participant = self.participant
-        participant.payoff_pg_et = (sum([p.payoff for p in self.in_rounds(C.PRACTICE_ROUNDS + 1, C.NUM_ROUNDS)]))*C.EXCHANGE_RATE_S
+        participant.payoff_pg_et = (sum([p.payoff for p in self.in_rounds(
+            C.PRACTICE_ROUNDS + 1, C.NUM_ROUNDS)]))*C.EXCHANGE_RATE_S
 
 
 class Instructions1(Page):
@@ -76,7 +63,12 @@ class Instructions1(Page):
 
     @staticmethod
     def vars_for_template(player: Player):
-        return dict(exchange_rate_pg=cu(0.25) if player.is_genpop else cu(0.10))
+        idx_current_task = player.session.task_order.index('pg_et')
+        return dict(
+            exchange_rate_pg=cu(0.25) if player.participant.is_genpop
+            else cu(0.10),
+            task_number=idx_current_task + 1
+        )
 
 
 class PrivateAccountDescription(Page):
@@ -93,7 +85,6 @@ class PublicAccountDescription(Page):
 
     @staticmethod
     def is_displayed(player: Player):
-        session = player.session
         subsession = player.subsession
         return subsession.round_number == 1
 
@@ -122,10 +113,13 @@ class Contribute(Page):
         group = player.group
         title = f"Practice Round {subsession.round_number}" if group.round_number <= C.PRACTICE_ROUNDS else f"Round {group.round_number - C.PRACTICE_ROUNDS}"
         has_prev_info = (1 < group.round_number and group.round_number < C.PRACTICE_ROUNDS + 1) or (
-                group.round_number > C.PRACTICE_ROUNDS + 1)
-        previous_round_public = player.in_round(subsession.round_number - 1).contribution if has_prev_info else ""
-        previous_round_private = C.ENDOWMENT - previous_round_public if has_prev_info else ""
-        previous_total = group.in_round(group.round_number - 1).total_contribution if has_prev_info else ""
+            group.round_number > C.PRACTICE_ROUNDS + 1)
+        previous_round_public = player.in_round(
+            subsession.round_number - 1).contribution if has_prev_info else ""
+        previous_round_private = C.ENDOWMENT - \
+            previous_round_public if has_prev_info else ""
+        previous_total = group.in_round(
+            group.round_number - 1).total_contribution if has_prev_info else ""
         previous_individual = C.ENDOWMENT - previous_round_public + group.in_round(
             group.round_number - 1).individual_share if has_prev_info else ""
 
@@ -135,7 +129,6 @@ class Contribute(Page):
 
     @staticmethod
     def error_message(player: Player, values):
-        print('values is', values)
         if values['contribution'] + values['private'] != C.ENDOWMENT:
             return F'The numbers must add up to {C.ENDOWMENT}'
 
@@ -150,7 +143,6 @@ class Results(Page):
 
     @staticmethod
     def vars_for_template(player: Player):
-        session = player.session
         subsession = player.subsession
         pagetitle = f"Your Results, Practice Round {subsession.round_number}" if subsession.round_number <= C.PRACTICE_ROUNDS else f"Your Results, Round {subsession.round_number - C.PRACTICE_ROUNDS}"
         return dict(page_title=pagetitle, payoff=int(player.payoff))
@@ -162,6 +154,14 @@ class Conclusion(Page):
     @staticmethod
     def is_displayed(player: Player):
         return player.round_number == C.NUM_ROUNDS
+
+    @staticmethod
+    def app_after_this_page(player: Player, upcoming_apps):
+        task_order = player.session.task_order
+        idx_current_app = task_order.index('pg_et')
+        if idx_current_app == 3:
+            return upcoming_apps[-1]
+        return f'{task_order[idx_current_app+1]}{idx_current_app+1}'
 
 
 page_sequence = [Instructions1, PrivateAccountDescription, PublicAccountDescription, Instructions2, Contribute,

@@ -19,46 +19,42 @@ class Subsession(BaseSubsession):
     pass
 
 
-def creating_subsession(subsession: Subsession):
+def creating_session(subsession: Subsession):
     subsession.group_randomly()
-
-    # assign is_genpop based on label
-    for player in subsession.get_players():
-        player.is_genpop = player.participant.label.lower()[0].to == "g"
 
 
 class Group(BaseGroup):
     decision_a = models.IntegerField(max=10, min=0)
-    decision_b = models.BooleanField(choices=[[True, 'Accept'], [False, 'Reject']])
-    proposed_amount = models.IntegerField()
-
-
-def compute_proposed_amount(group: Group):
-    session = group.session
-    subsession = group.subsession
-    group.proposed_amount = C.ENDOWMENT_A - group.decision_a
+    decision_b = models.BooleanField(
+        choices=[[True, 'Accept'], [False, 'Reject']])
 
 
 class Player(BasePlayer):
-    is_genpop = models.BooleanField(initial=False)
 
     def calculate_game_payoff(self):
         player = self
-        participant = player.participant
-        participant.payoff_ultimatum = sum([p.payoff for p in player.in_all_rounds()])
         group = player.group
         if group.decision_b:
-            player.payoff = C.ENDOWMENT_A - group.decision_a if player.role == C.PROPOSER_ROLE else group.decision_a
+            player.payoff = C.ENDOWMENT_A - \
+                group.decision_a if player.role == C.PROPOSER_ROLE else group.decision_a
         else:
             player.payoff = 0
 
+        participant = player.participant
+        participant.payoff_ultimatum = sum(
+            [p.payoff for p in player.in_all_rounds()])
+
 
 class Instructions(Page):
-    form_model = 'player'
 
     @staticmethod
     def vars_for_template(player: Player):
-        return dict(exchange_rate_ult=cu(2.50) if player.is_genpop else cu(1))
+        idx_current_task = player.session.task_order.index('ultimatum')
+        return dict(
+            exchange_rate_ult=cu(2.50) if player.participant.is_genpop
+            else cu(1),
+            task_number=idx_current_task + 1
+        )
 
 
 class AssignmentU(Page):
@@ -103,5 +99,15 @@ class MyWaitPageBdecision(WaitPage):
 class Conclusion(Page):
     form_model = 'player'
 
+    @staticmethod
+    def app_after_this_page(player: Player, upcoming_apps):
 
-page_sequence = [Instructions, AssignmentU, Adecision, MyWaitPageAdecision, Bdecision, MyWaitPageBdecision, Conclusion]
+        task_order = player.session.task_order
+        idx_current_app = task_order.index('ultimatum')
+        if idx_current_app == 3:
+            return upcoming_apps[-1]
+        return f'{task_order[idx_current_app+1]}{idx_current_app+1}'
+
+
+page_sequence = [Instructions, AssignmentU, Adecision,
+                 MyWaitPageAdecision, Bdecision, MyWaitPageBdecision, Conclusion]

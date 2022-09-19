@@ -20,16 +20,13 @@ class Subsession(BaseSubsession):
     pass
 
 
-def creating_subsession(subsession: Subsession):
+def creating_session(subsession: Subsession):
     subsession.group_randomly()
-
-    # assign is_genpop based on label
-    for player in subsession.get_players():
-        player.is_genpop = player.participant.label.lower()[0].to == "g"
 
 
 class Group(BaseGroup):
-    sent_amount = models.IntegerField(doc='Amount sent by P1', label='Please enter an amount from 0 to 100', min=0)
+    sent_amount = models.IntegerField(
+        doc='Amount sent by P1', label='Please enter an amount from 0 to 100', min=0)
     sent_back_amount = models.IntegerField(doc='Amount sent back by P2', min=0)
 
     def sent_back_amount_max(self):
@@ -41,25 +38,31 @@ class Group(BaseGroup):
         p2 = group.get_player_by_role(C.TRUSTEE_ROLE)
 
         p1.payoff = C.ENDOWMENT - group.sent_amount + group.sent_back_amount
-        p2.payoff = C.ENDOWMENT + (group.sent_amount * C.MULTIPLIER) - group.sent_back_amount
+        p2.payoff = C.ENDOWMENT + \
+            (group.sent_amount * C.MULTIPLIER) - group.sent_back_amount
 
         p1.calculate_game_payoff()
         p2.calculate_game_payoff()
 
 
 class Player(BasePlayer):
-    is_genpop = models.BooleanField(initial=False)
 
     def calculate_game_payoff(self):
         participant = self.participant
-        participant.payoff_trust = sum([p.payoff for p in self.in_all_rounds()])
+        participant.payoff_trust = sum(
+            [p.payoff for p in self.in_all_rounds()])
 
 
 class Introduction(Page):
     form_model = 'player'
 
     def vars_for_template(player: Player):
-        return dict(exchange_rate_trust=cu(2.50) if player.is_genpop else cu(1))
+        idx_current_task = player.session.task_order.index('trust')
+        return dict(
+            exchange_rate_trust=cu(2.50) if player.participant.is_genpop
+            else cu(1),
+            task_number=idx_current_task + 1
+        )
 
 
 class Decisions(Page):
@@ -129,6 +132,15 @@ class Results(Page):
 
 class Task2Conclusion(Page):
     form_model = 'player'
+
+    @staticmethod
+    def app_after_this_page(player: Player, upcoming_apps):
+
+        task_order = player.session.task_order
+        idx_current_app = task_order.index('trust')
+        if idx_current_app == 3:
+            return upcoming_apps[-1]
+        return f'{task_order[idx_current_app+1]}{idx_current_app+1}'
 
 
 page_sequence = [Introduction, Decisions, AssignmentA, Send, AssignmentB, SendWaitPage, SendBack, SendBackWaitPage,

@@ -53,12 +53,8 @@ class Subsession(BaseSubsession):
     pass
 
 
-def creating_subsession(subsession: Subsession):
+def creating_session(subsession: Subsession):
     subsession.group_randomly()
-
-    # assign is_genpop based on label
-    for player in subsession.get_players():
-        player.is_genpop = player.participant.label.lower()[0].to == "g"
 
 
 class Group(BaseGroup):
@@ -69,8 +65,8 @@ class Group(BaseGroup):
     round_result = models.CurrencyField()
 
     total_return = models.CurrencyField(
-        #doc="""Total return from agent's effort = [Return for single unit of
-                #agent's work effort] * [Agent's work effort]"""
+        # doc="""Total return from agent's effort = [Return for single unit of
+        # agent's work effort] * [Agent's work effort]"""
     )
 
     employer_wage_offer = models.PositiveIntegerField(
@@ -92,7 +88,7 @@ class Group(BaseGroup):
     )
 
     employee_work_cost = models.CurrencyField(
-#        doc="""Agent's cost of work effort"""
+        #        doc="""Agent's cost of work effort"""
     )
 
     def set_payoffs(self):
@@ -116,7 +112,6 @@ class Group(BaseGroup):
 
 
 class Player(BasePlayer):
-    is_genpop = models.BooleanField(initial=False)
     employer_answer = models.IntegerField(label="Employer's payoff (tokens)")
     employee_answer = models.IntegerField(label="Employee's payoff (tokens)")
 
@@ -142,7 +137,14 @@ class Intro(Page):
 
     @staticmethod
     def vars_for_template(player: Player):
-        return dict(exchange_rate_ge=cu(0.50) if player.is_genpop else cu(0.20))
+        task_order = player.session.task_order
+        idx_current_task = task_order.index('ge')
+
+        return dict(
+            exchange_rate_ge=cu(0.50) if player.participant.is_genpop
+            else cu(0.20),
+            task_number=idx_current_task + 1
+        )
 
 
 class Instructions(Page):
@@ -202,7 +204,6 @@ class MyWaitPageBdecision(WaitPage):
         return player.role() == C.EMPLOYER_ROLE
 
     def after_all_players_arrive(group: Group):
-        print("all players arrived at mywaitpagebdecision")
         group.set_payoffs()
 
 
@@ -213,9 +214,18 @@ class Results(Page):
         employer = group.get_player_by_role(C.EMPLOYER_ROLE)
         employee = group.get_player_by_role(C.EMPLOYEE_ROLE)
 
-        return dict(employer_payoff= int(employer.payoff), employee_payoff = int(employee.payoff))
+        return dict(employer_payoff=int(employer.payoff), employee_payoff=int(employee.payoff))
 
-#class Bdecision(Page):
+    @staticmethod
+    def app_after_this_page(player: Player, upcoming_apps):
+
+        task_order = player.session.task_order
+        idx_current_app = task_order.index('ge')
+        if idx_current_app == 3:
+            return upcoming_apps[-1]
+        return f'{task_order[idx_current_app+1]}{idx_current_app+1}'
+
+# class Bdecision(Page):
 #    form_model = 'group'
 #    form_fields = ['decision_b']
 #
@@ -229,7 +239,7 @@ class Results(Page):
 #        return {"proposed_amount": C.ENDOWMENT_A - group.decision_a}
 
 
-#class MyWaitPageBdecision(WaitPage):
+# class MyWaitPageBdecision(WaitPage):
 #    @staticmethod
 #    def after_all_players_arrive(group: Group):
 #        players = group.get_players()
@@ -237,8 +247,9 @@ class Results(Page):
 #            p.calculate_game_payoff()
 
 
-#class Conclusion(Page):
+# class Conclusion(Page):
 #    form_model = 'player'
 
 
-page_sequence = [Intro, Instructions, Explanation, Quiz, AssignmentA, AssignmentB, Adecision, MyWaitPageAdecision, Bdecision, MyWaitPageBdecision, Results]
+page_sequence = [Intro, Instructions, Explanation, Quiz, AssignmentA, AssignmentB,
+                 Adecision, MyWaitPageAdecision, Bdecision, MyWaitPageBdecision, Results]
