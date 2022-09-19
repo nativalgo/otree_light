@@ -13,6 +13,7 @@ class C(BaseConstants):
     ENDOWMENT = 10
     NUM_REAL_ROUNDS = 10
     NUM_ROUNDS = PRACTICE_ROUNDS + NUM_REAL_ROUNDS
+    EXCHANGE_RATE_S = 0.1
 
 
 class Subsession(BaseSubsession):
@@ -36,8 +37,8 @@ class Subsession(BaseSubsession):
 
 
 class Group(BaseGroup):
-    total_contribution = models.CurrencyField()
-    individual_share = models.CurrencyField()
+    total_contribution = models.IntegerField()
+    individual_share = models.FloatField()
 
     def compute_payoffs(self):
         group = self
@@ -61,7 +62,7 @@ class Player(BasePlayer):
 
     def calculate_game_payoff(self):
         participant = self.participant
-        participant.payoff_pg_et = sum([p.payoff for p in self.in_rounds(C.PRACTICE_ROUNDS + 1, C.NUM_ROUNDS)])
+        participant.payoff_pg_et = (sum([p.payoff for p in self.in_rounds(C.PRACTICE_ROUNDS + 1, C.NUM_ROUNDS)]))*C.EXCHANGE_RATE_S
 
 
 class Instructions1(Page):
@@ -152,7 +153,7 @@ class Results(Page):
         session = player.session
         subsession = player.subsession
         pagetitle = f"Your Results, Practice Round {subsession.round_number}" if subsession.round_number <= C.PRACTICE_ROUNDS else f"Your Results, Round {subsession.round_number - C.PRACTICE_ROUNDS}"
-        return dict(page_title=pagetitle)
+        return dict(page_title=pagetitle, payoff=int(player.payoff))
 
 
 class Conclusion(Page):

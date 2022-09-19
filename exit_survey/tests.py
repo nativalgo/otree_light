@@ -13,4 +13,4 @@ class PlayerBot(Bot):
         yield Survey7, dict(age_student=1, year_school=1)
         yield Survey8, dict(income=1, hh_size=1)
         yield Comments
-        yield Final
+        #yield Final

@@ -13,6 +13,7 @@ class C(BaseConstants):
     EMPLOYEE_ROLE = 'employee'
     MIN_WAGE = 20
     MAX_WAGE = 120
+    EXCHANGE_RATE_S = 0.20
     # Effort * 1/10 (Principal return)
     EFFORT_TO_RETURN = {
         0.1: 0.1,
@@ -107,8 +108,11 @@ class Group(BaseGroup):
 
         money_to_employee = self.employer_wage_offer
 
-        employee.payoff = money_to_employee - self.employee_work_cost
+        employee.payoff = money_to_employee - self.employee_work_cost - 20
         employer.payoff = self.employee_work_effort * (120 - money_to_employee)
+
+        employee.participant.payoff_ge = employee.payoff * C.EXCHANGE_RATE_S
+        employer.participant.payoff_ge = employer.payoff * C.EXCHANGE_RATE_S
 
 
 class Player(BasePlayer):
@@ -209,7 +213,7 @@ class Results(Page):
         employer = group.get_player_by_role(C.EMPLOYER_ROLE)
         employee = group.get_player_by_role(C.EMPLOYEE_ROLE)
 
-        return dict(employer_payoff= employer.payoff, employee_payoff= employee.payoff)
+        return dict(employer_payoff= int(employer.payoff), employee_payoff = int(employee.payoff))
 
 #class Bdecision(Page):
 #    form_model = 'group'

@@ -13,26 +13,16 @@ class C(BaseConstants):
 
 
 class Subsession(BaseSubsession):
-    pay_task = models.IntegerField()
 
+    def creating_session(subsession):
+        session = subsession.session
+        random_app = random.randint(1, 4)
+        session.vars['random_pay_app'] = random_app
+        print('set to', session.vars, random_app)
 
-    def create_subsession(self):
         # assign is_genpop based on label
-        for player in self.get_players():
-            player.is_genpop = player.participant.label.lower()[0].to == "g"
-
-
-    def random_app_pay(self):
-        subsession = self
-        subsession.pay_task = random.randint(1, 3)
         for player in subsession.get_players():
-            participant = player.participant
-            if subsession.pay_task == 1:
-                participant.payoff = participant.payoff_ultimatum
-            elif subsession.pay_task == 2:
-                participant.payoff = participant.payoff_trust
-            else:
-                participant.payoff = participant.payoff_pg_et
+            player.is_genpop = player.participant.label.lower()[0].to == "g"
 
 
 class Group(BaseGroup):
@@ -86,6 +76,21 @@ class Survey1(Page):
     form_model = 'player'
     form_fields = ['hours_slept', 'feeling_best1']
 
+    # Calculate the payoff early to give chance to prepare if monitoring admin page
+    @staticmethod
+    def before_next_page(player: Player, timeout_happened):
+        participant = player.participant
+        session = player.session
+        print(session.vars)
+        if session.random_pay_app == 1:
+            participant.payoff = participant.payoff_ultimatum
+        elif session.random_pay_app == 2:
+            participant.payoff = participant.payoff_trust
+        elif session.random_pay_app == 4:
+            participant.payoff = participant.payoff_ge
+        else:
+            participant.payoff = participant.payoff_pg_et
+
 
 class Survey2(Page):
     form_model = 'player'
@@ -131,16 +136,11 @@ class Survey8(Page):
 
 class Comments(Page):
     form_model = 'player'
-
-    @staticmethod
-    def before_next_page(player: Player, timeout_happened):
-        session = player.session
-        subsession = player.subsession
-        subsession.random_app_pay()
+    form_fields = ['comments']
 
 
 class Final(Page):
-    form_model = 'player'
+    pass
 
 
 page_sequence = [Survey1, Survey2, Survey3, Survey4, Survey5, Survey6, Survey7, Survey8, Comments, Final]

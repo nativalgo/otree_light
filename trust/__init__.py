@@ -29,8 +29,8 @@ def creating_subsession(subsession: Subsession):
 
 
 class Group(BaseGroup):
-    sent_amount = models.CurrencyField(doc='Amount sent by P1', label='Please enter an amount from 0 to 100', min=0)
-    sent_back_amount = models.CurrencyField(doc='Amount sent back by P2', min=0)
+    sent_amount = models.IntegerField(doc='Amount sent by P1', label='Please enter an amount from 0 to 100', min=0)
+    sent_back_amount = models.IntegerField(doc='Amount sent back by P2', min=0)
 
     def sent_back_amount_max(self):
         return self.sent_amount * C.MULTIPLIER
@@ -70,14 +70,14 @@ class AssignmentA(Page):
 
     @staticmethod
     def is_displayed(player: Player):
-        return player.role() == C.TRUSTOR_ROLE
+        return player.role == C.TRUSTOR_ROLE
 
 
 class AssignmentB(Page):
-    pass
-    # @staticmethod
-    # def is_displayed(player: Player):
-    #     return player.role() == C.TRUSTEE_ROLE
+
+    @staticmethod
+    def is_displayed(player: Player):
+        return player.role == C.TRUSTEE_ROLE
 
 
 class Send(Page):
@@ -86,7 +86,7 @@ class Send(Page):
 
     @staticmethod
     def is_displayed(player: Player):
-        return player.role() == C.TRUSTOR_ROLE
+        return player.role == C.TRUSTOR_ROLE
 
 
 class SendWaitPage(WaitPage):
@@ -99,7 +99,7 @@ class SendBack(Page):
 
     @staticmethod
     def is_displayed(player: Player):
-        return player.role() == C.TRUSTEE_ROLE
+        return player.role == C.TRUSTEE_ROLE
 
     @staticmethod
     def vars_for_template(player: Player):
@@ -124,7 +124,7 @@ class Results(Page):
     @staticmethod
     def vars_for_template(player: Player):
         group = player.group
-        return dict(tripled_amount=group.sent_amount * C.MULTIPLIER)
+        return dict(tripled_amount=group.sent_amount * C.MULTIPLIER, payoff=int(player.payoff))
 
 
 class Task2Conclusion(Page):

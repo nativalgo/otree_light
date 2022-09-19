@@ -48,7 +48,7 @@ class Player(BasePlayer):
         participant.payoff_ultimatum = sum([p.payoff for p in player.in_all_rounds()])
         group = player.group
         if group.decision_b:
-            player.payoff = C.ENDOWMENT_A - group.decision_a if player.role() == C.PROPOSER_ROLE else group.decision_a
+            player.payoff = C.ENDOWMENT_A - group.decision_a if player.role == C.PROPOSER_ROLE else group.decision_a
         else:
             player.payoff = 0
 
@@ -71,7 +71,7 @@ class Adecision(Page):
 
     @staticmethod
     def is_displayed(player: Player):
-        return player.role() == C.PROPOSER_ROLE
+        return player.role == C.PROPOSER_ROLE
 
 
 class MyWaitPageAdecision(WaitPage):
@@ -84,7 +84,7 @@ class Bdecision(Page):
 
     @staticmethod
     def is_displayed(player: Player):
-        return player.role() == C.RECEIVER_ROLE
+        return player.role == C.RECEIVER_ROLE
 
     @staticmethod
     def vars_for_template(player: Player):
