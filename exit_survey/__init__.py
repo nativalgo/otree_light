@@ -58,7 +58,7 @@ class Player(BasePlayer):
         choices=[['1', '18-25'], ['2', '26-35'],
                  ['3', '36-45'], ['4', '45-59'], ['5', '60+']],
         label='Please indicate your age range')
-    age_student = models.IntegerField(label='Please indicate your age range')
+    age_student = models.IntegerField(label='Please indicate your age')
     year_school = models.StringField(
         choices=[['1', '1st year undergraduate'], ['2', '2nd year undergraduate'], ['3', '3rd year undergraduate'],
                  ['4', '4th year undergraduate'], [

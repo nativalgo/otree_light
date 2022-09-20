@@ -25,7 +25,7 @@ def creating_session(subsession: Subsession):
 
 class Group(BaseGroup):
     sent_amount = models.IntegerField(
-        doc='Amount sent by P1', label='Please enter an amount from 0 to 100', min=0)
+        doc='Amount sent by P1', label='Please enter an amount from 0 to 10', min=0, max=10)
     sent_back_amount = models.IntegerField(doc='Amount sent back by P2', min=0)
 
     def sent_back_amount_max(self):
@@ -107,7 +107,7 @@ class SendBack(Page):
     def vars_for_template(player: Player):
         group = player.group
         tripled_amount = group.sent_back_amount_max()
-        total_amount = C.ENDOWMENT + group.sent_amount
+        total_amount = C.ENDOWMENT + tripled_amount
         return dict(tripled_amount=tripled_amount, total_amount=total_amount)
 
 
@@ -130,6 +130,10 @@ class Results(Page):
 
 
 class Task2Conclusion(Page):
+    form_model = 'player'
+
+
+class Conclusion(WaitPage):
     form_model = 'player'
 
     @staticmethod

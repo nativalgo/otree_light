@@ -124,12 +124,12 @@ class Player(BasePlayer):
 
 def employer_answer_error_message(player, value):
     if value != 6:
-        return 'This is incorrect, please try again'
+        return 'Employer payoff function: (120 - w) * e'
 
 
 def employee_answer_error_message(player, value):
     if value != 78:
-        return 'This is incorrect, please try again'
+        return 'Employee payoff function: w - c(e) - 20'
 
 
 class Intro(Page):
