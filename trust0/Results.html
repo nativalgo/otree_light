@@ -17,6 +17,7 @@
     </p>
 {{ else }}
     <p>
+        You were initially endowed with {{C.ENDOWMENT}}.
         Participant A sent you {{ group.sent_amount }}.
         They were tripled so you received {{ tripled_amount }}.
         You chose to return {{ group.sent_back_amount }}.
@@ -25,7 +26,7 @@
         You received {{ tripled_amount }},
         chose to return {{ group.sent_back_amount }}
         thus you now have:
-        ({{ tripled_amount }})-({{ group.sent_back_amount }})=<strong>{{ player.payoff }}</strong>
+        {{C.ENDOWMENT}}+{{ tripled_amount }}-{{ group.sent_back_amount }}=<strong>{{ payoff }}</strong>
     </p>
     .
 {{ endif }}

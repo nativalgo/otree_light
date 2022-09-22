@@ -1,7 +1,7 @@
 from os import environ
 
 SESSION_CONFIG_DEFAULTS = dict(
-    real_world_currency_per_point=1, participation_fee=10)
+    real_world_currency_per_point=1, participation_fee=15)
 SESSION_CONFIGS = [
     dict(name='Eric_is_da_best',
          num_demo_participants=None,
@@ -30,7 +30,7 @@ SESSION_CONFIGS = [
          use_browser_bots=True,),
     dict(name='trust',
          num_demo_participants=None,
-         app_sequence=['trust0'])
+         app_sequence=['trusttest'])
 ]
 LANGUAGE_CODE = 'en'
 REAL_WORLD_CURRENCY_CODE = 'USD'

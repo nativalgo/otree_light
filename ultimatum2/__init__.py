@@ -96,18 +96,30 @@ class MyWaitPageBdecision(WaitPage):
             p.calculate_game_payoff()
 
 
-class Conclusion(Page):
+class Results(Page):
     form_model = 'player'
 
     @staticmethod
-    def app_after_this_page(player: Player, upcoming_apps):
+    def vars_for_template(player: Player):
+        group = player.group
+        decision = 'accepted' if group.decision_b else 'rejected'
+        return dict(payoff=int(player.payoff), decision=decision)
 
+
+class Conclusion(Page):
+    form_model = 'player'
+
+
+class Done(WaitPage):
+
+    @staticmethod
+    def app_after_this_page(player: Player, upcoming_apps):
         task_order = player.session.task_order
         idx_current_app = task_order.index('ultimatum')
         if idx_current_app == 3:
             return upcoming_apps[-1]
-        return f'{task_order[idx_current_app+1]}{idx_current_app+1}'
+        return f'{task_order[idx_current_app + 1]}{idx_current_app + 1}'
 
 
 page_sequence = [Instructions, AssignmentU, Adecision,
-                 MyWaitPageAdecision, Bdecision, MyWaitPageBdecision, Conclusion]
+                 MyWaitPageAdecision, Bdecision, MyWaitPageBdecision, Results, Conclusion, Done]

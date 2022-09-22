@@ -1,0 +1,68 @@
+{{ extends 'global/Page.html' }}
+{{ block title }}Instructions{{ endblock }}
+
+{{ block content }}
+
+    <p>
+    <table class=table>
+        <tr>
+            <th>Effort Level</th>
+            <td>0.1</td>
+            <td>0.2</td>
+            <td>0.3</td>
+            <td>0.4</td>
+            <td>0.5</td>
+            <td>0.6</td>
+            <td>0.7</td>
+            <td>0.8</td>
+            <td>0.9</td>
+            <td>1</td>
+        </tr>
+        <tr>
+            <th>Effort Cost</th>
+            <td>0</td>
+            <td>1</td>
+            <td>2</td>
+            <td>4</td>
+            <td>6</td>
+            <td>8</td>
+            <td>10</td>
+            <td>12</td>
+            <td>15</td>
+            <td>18</td>
+        </tr>
+    </table>
+    </p>
+
+<p>
+    Calculation of payoffs:
+</p>
+<p>
+    <b>Payoff of the employer = (120 - w) * e</b>
+</p>
+<p>
+    The payoff of the employer equals: (120 - the wage paid to the employee) * the actual
+effort level selected by the employee.
+</p>
+<p>
+    <b>Payoff of the employee = w - c(e) – 20</b>
+</p>
+<p>
+The payoff of the employee equals: the wage received from the employer - the cost of the
+actual effort level he selected - 20.
+</p>
+<p>
+Thus, the higher the effort level provided by the employee and the lower the wage, the
+larger the employer's payoffs. The lower the effort level provided by the employee and the
+higher the wage, the larger the employee's payoffs.
+</p>
+<p>
+Example:
+If the actual wage is 50 and the actual effort level is 0.5, then the payoffs would be:<br>
+Employer's payoffs = (120 - 50) * 0.5 = 35 tokens = $7.00<br>
+Employee's payoffs = 50 - 6 - 20 = 24 tokens = $4.80
+</p>
+
+{{ next_button }}
+
+{{ endblock }}

@@ -139,8 +139,10 @@ class Comments(Page):
 class Final(Page):
 
     def vars_for_template(player: Player):
+        participant = player.participant
+        total_pay = participant.payoff_plus_participation_fee()
         return dict(
-            selected_task=player.session.random_pay_app + 1
+            selected_task=player.session.random_pay_app + 1, total_pay=total_pay
         )
 
 

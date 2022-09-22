@@ -41,9 +41,21 @@ class Player(BasePlayer):
 class Instructions(Page):
     form_model = 'player'
 
+
+class PFTask(Page):
+    pass
+
+
+class EG(Page):
+    pass
+
+
+class Done(WaitPage):
+    form_model = 'player'
+
     @staticmethod
     def app_after_this_page(player, upcoming_apps):
         return player.session.task_order[0] + '0'
 
 
-page_sequence = [Instructions]
+page_sequence = [Instructions, PFTask, EG, Done]

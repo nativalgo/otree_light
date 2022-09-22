@@ -155,14 +155,20 @@ class Conclusion(Page):
     def is_displayed(player: Player):
         return player.round_number == C.NUM_ROUNDS
 
+
+class Done(WaitPage):
+
     @staticmethod
+    def is_displayed(player: Player):
+        return player.round_number == C.NUM_ROUNDS
+
     def app_after_this_page(player: Player, upcoming_apps):
         task_order = player.session.task_order
         idx_current_app = task_order.index('pg_et')
         if idx_current_app == 3:
             return upcoming_apps[-1]
-        return f'{task_order[idx_current_app+1]}{idx_current_app+1}'
+        return f'{task_order[idx_current_app + 1]}{idx_current_app + 1}'
 
 
 page_sequence = [Instructions1, PrivateAccountDescription, PublicAccountDescription, Instructions2, Contribute,
-                 ResultsWaitPage, Results, Conclusion]
+                 ResultsWaitPage, Results, Conclusion, Done]

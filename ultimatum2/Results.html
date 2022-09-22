@@ -1,0 +1,25 @@
+{{ extends 'global/Page.html' }}
+{{ block title }}Results{{ endblock }}
+
+{{ block content }}
+
+{{ if player.role == C.PROPOSER_ROLE}}
+    <p>
+        You offered {{ group.decision_a}} tokens to participant B.<br>
+        Participant B {{decision}} this offer.
+        Therefore, you earned {{payoff}} tokens.
+    </p>
+{{ else }}
+    <p>
+        Participant A sent you {{ group.decision_a}}.<br>
+        You {{decision}} this offer. <br>
+        Therefore, you earned {{payoff}} tokens.
+    </p>
+
+{{ endif }}
+
+
+{{ next_button }}
+
+
+{{ endblock }}

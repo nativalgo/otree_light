@@ -216,6 +216,9 @@ class Results(Page):
 
         return dict(employer_payoff=int(employer.payoff), employee_payoff=int(employee.payoff))
 
+
+class Done(WaitPage):
+
     @staticmethod
     def app_after_this_page(player: Player, upcoming_apps):
 
@@ -225,31 +228,6 @@ class Results(Page):
             return upcoming_apps[-1]
         return f'{task_order[idx_current_app+1]}{idx_current_app+1}'
 
-# class Bdecision(Page):
-#    form_model = 'group'
-#    form_fields = ['decision_b']
-#
-#    @staticmethod
-#    def is_displayed(player: Player):
-#        return player.role() == C.RECEIVER_ROLE
-
-#    @staticmethod
-#    def vars_for_template(player: Player):
-#        group = player.group
-#        return {"proposed_amount": C.ENDOWMENT_A - group.decision_a}
-
-
-# class MyWaitPageBdecision(WaitPage):
-#    @staticmethod
-#    def after_all_players_arrive(group: Group):
-#        players = group.get_players()
-#        for p in players:
-#            p.calculate_game_payoff()
-
-
-# class Conclusion(Page):
-#    form_model = 'player'
-
 
 page_sequence = [Intro, Instructions, Explanation, Quiz, AssignmentA, AssignmentB,
-                 Adecision, MyWaitPageAdecision, Bdecision, MyWaitPageBdecision, Results]
+                 Adecision, MyWaitPageAdecision, Bdecision, MyWaitPageBdecision, Results, Done]

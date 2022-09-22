@@ -28,9 +28,6 @@ class Group(BaseGroup):
         doc='Amount sent by P1', label='Please enter an amount from 0 to 10', min=0, max=10)
     sent_back_amount = models.IntegerField(doc='Amount sent back by P2', min=0)
 
-    def sent_back_amount_max(self):
-        return self.sent_amount * C.MULTIPLIER
-
     def compute_payoffs(self):
         group = self
         p1 = group.get_player_by_role(C.TRUSTOR_ROLE)
@@ -42,6 +39,10 @@ class Group(BaseGroup):
 
         p1.calculate_game_payoff()
         p2.calculate_game_payoff()
+
+
+def sent_back_amount_max(group: Group):
+    return group.sent_amount * C.MULTIPLIER
 
 
 class Player(BasePlayer):
@@ -106,7 +107,7 @@ class SendBack(Page):
     @staticmethod
     def vars_for_template(player: Player):
         group = player.group
-        tripled_amount = group.sent_back_amount_max()
+        tripled_amount = sent_back_amount_max(group)
         total_amount = C.ENDOWMENT + tripled_amount
         return dict(tripled_amount=tripled_amount, total_amount=total_amount)
 
@@ -136,15 +137,16 @@ class Task2Conclusion(Page):
 class Conclusion(WaitPage):
     form_model = 'player'
 
+
+class Done(WaitPage):
     @staticmethod
     def app_after_this_page(player: Player, upcoming_apps):
-
         task_order = player.session.task_order
         idx_current_app = task_order.index('trust')
         if idx_current_app == 3:
             return upcoming_apps[-1]
-        return f'{task_order[idx_current_app+1]}{idx_current_app+1}'
+        return f'{task_order[idx_current_app + 1]}{idx_current_app + 1}'
 
 
 page_sequence = [Introduction, Decisions, AssignmentA, Send, AssignmentB, SendWaitPage, SendBack, SendBackWaitPage,
-                 ResultsWaitPage, Results, Task2Conclusion]
+                 ResultsWaitPage, Results, Task2Conclusion, Done]
