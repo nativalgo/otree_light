@@ -53,6 +53,8 @@ class EG(Page):
 class Done(WaitPage):
     form_model = 'player'
 
+    wait_for_all_groups = True
+
     @staticmethod
     def app_after_this_page(player, upcoming_apps):
         return player.session.task_order[0] + '0'

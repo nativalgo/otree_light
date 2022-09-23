@@ -112,6 +112,8 @@ class Conclusion(Page):
 
 class Done(WaitPage):
 
+    wait_for_all_groups = True
+
     @staticmethod
     def app_after_this_page(player: Player, upcoming_apps):
         task_order = player.session.task_order

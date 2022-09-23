@@ -158,6 +158,8 @@ class Conclusion(Page):
 
 class Done(WaitPage):
 
+    wait_for_all_groups = True
+
     @staticmethod
     def is_displayed(player: Player):
         return player.round_number == C.NUM_ROUNDS
