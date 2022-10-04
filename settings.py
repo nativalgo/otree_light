@@ -1,7 +1,7 @@
 from os import environ
 
 SESSION_CONFIG_DEFAULTS = dict(
-    real_world_currency_per_point=1, participation_fee=15)
+    real_world_currency_per_point=1, participation_fee=15, dark=True)
 SESSION_CONFIGS = [
     dict(name='Eric_is_da_best',
          num_demo_participants=None,
