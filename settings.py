@@ -5,7 +5,7 @@ SESSION_CONFIG_DEFAULTS = dict(
 SESSION_CONFIGS = [
     dict(name='Eric_is_da_best',
          num_demo_participants=None,
-         app_sequence=['Intro',
+         app_sequence=['Intro', 'shapesort',
                        # Will choose a random order and ignore games in-between
                        'ultimatum0', 'trust0', 'pg_et0', 'ge0',
                        'ultimatum1', 'trust1', 'pg_et1', 'ge1',
