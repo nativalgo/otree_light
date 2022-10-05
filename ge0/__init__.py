@@ -123,7 +123,7 @@ class Player(BasePlayer):
 
 
 def employer_answer_error_message(player, value):
-    if value != 6:
+    if value != 16:
         return 'Employer payoff function: (120 - w) * e'
 
 
